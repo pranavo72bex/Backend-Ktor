@@ -6,6 +6,7 @@ import com.example.model.AuthResponseData
 import com.example.model.SignInParams
 import com.example.model.SignUpParams
 import com.example.plugins.generateToken
+import com.example.security.hashPassword
 import com.example.utils.Response
 import io.ktor.http.*
 
@@ -37,7 +38,7 @@ class UserRepositoryImpl(
                             id = insertedUser.id,
                             name = insertedUser.name,
                             bio = insertedUser.bio,
-                            token = generateToken(params.email)
+                            token = generateToken(params.password)
                         )
                     )
                 )
@@ -56,14 +57,15 @@ class UserRepositoryImpl(
                 )
             )
         } else{
-            if(user.password == params.password){
+            val hashedPassword = hashPassword(params.password)
+            if(user.password == hashedPassword){
                 Response.Success(
                     data = AuthResponse(
                         data = AuthResponseData(
                             id = user.id,
                             name = user.name,
                             bio = user.bio,
-                            token = generateToken(params.email)
+                            token = generateToken(params.password)
                         )
                     )
                 )

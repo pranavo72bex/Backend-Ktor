@@ -4,6 +4,7 @@ import com.example.dao.DatabaseFactory.dbQuery
 import com.example.model.SignUpParams
 import com.example.model.User
 import com.example.model.UserRow
+import com.example.security.hashPassword
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -15,7 +16,7 @@ class UserDaoImpl : UserDao {
            val insetStatement = UserRow.insert {
                it[name] = params.name
                it[email] = params.email
-               it[password] = params.password
+               it[password] = hashPassword(params.password)
            }
             insetStatement.resultedValues?.singleOrNull()?.let {
               rowToUser(it)
