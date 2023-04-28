@@ -1,7 +1,6 @@
 package com.example.model
 
 import org.jetbrains.exposed.sql.Table
-import java.util.SimpleTimeZone
 
 object UserRow: Table(name= "users"){
     val id = integer(name = "user_id").autoIncrement()

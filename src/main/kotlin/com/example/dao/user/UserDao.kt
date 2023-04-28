@@ -5,5 +5,5 @@ import com.example.model.User
 interface UserDao {
 
     suspend fun insert(params: SignUpParams): User?
-    suspend fun findByEmail(email: String?): User?
+    suspend fun findByEmail(email: String): User?
 }
