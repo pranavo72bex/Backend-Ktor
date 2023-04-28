@@ -5,6 +5,7 @@ import com.example.model.AuthResponse
 import com.example.model.AuthResponseData
 import com.example.model.SignInParams
 import com.example.model.SignUpParams
+import com.example.plugins.generateToken
 import com.example.utils.Response
 import io.ktor.http.*
 
@@ -36,7 +37,7 @@ class UserRepositoryImpl(
                             id = insertedUser.id,
                             name = insertedUser.name,
                             bio = insertedUser.bio,
-                            token = "Here is the token" //to do
+                            token = generateToken(params.email)
                         )
                     )
                 )
@@ -62,7 +63,7 @@ class UserRepositoryImpl(
                             id = user.id,
                             name = user.name,
                             bio = user.bio,
-                            token = "Here is the token" //to do
+                            token = generateToken(params.email)
                         )
                     )
                 )
