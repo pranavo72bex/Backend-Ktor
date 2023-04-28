@@ -1,6 +1,7 @@
 package com.example.route
 
 import com.example.model.AuthResponse
+import com.example.model.SignInParams
 import com.example.model.SignUpParams
 import com.example.repository.UserRepository
 import io.ktor.http.*
@@ -28,6 +29,29 @@ fun Routing.authRouting(){
             }
 
             val result = repository.signUp(params = params)
+
+            call.respond(
+                status = result.code,
+                message = result.data
+            )
+        }
+    }
+
+    route(path = "/login"){
+        post {
+            val params = call.receiveNullable<SignInParams>()
+
+            if(params == null){
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = AuthResponse(
+                        errorMessage = "Invalid Credential"
+                    )
+                )
+                return@post
+            }
+
+            val result = repository.signIn(params = params)
 
             call.respond(
                 status = result.code,

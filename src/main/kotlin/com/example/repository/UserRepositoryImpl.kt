@@ -45,7 +45,36 @@ class UserRepositoryImpl(
     }
 
     override suspend fun signIn(params: SignInParams): Response<AuthResponse> {
-        TODO("Not yet implemented")
+        val user = userDao.findByEmail(params.email)
+
+       return if (user == null){
+            Response.Error(
+                code = HttpStatusCode.NotFound,
+                data = AuthResponse(
+                    errorMessage = "User not found"
+                )
+            )
+        } else{
+            if(user.password == params.password){
+                Response.Success(
+                    data = AuthResponse(
+                        data = AuthResponseData(
+                            id = user.id,
+                            name = user.name,
+                            bio = user.bio,
+                            token = "Here is the token" //to do
+                        )
+                    )
+                )
+            } else {
+                Response.Error(
+                    code = HttpStatusCode.Forbidden,
+                    data = AuthResponse(
+                        errorMessage = "Invalid password"
+                    )
+                )
+            }
+        }
     }
 
     private suspend fun userAlreadyExist(email: String): Boolean{
